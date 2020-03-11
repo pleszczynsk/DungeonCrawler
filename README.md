@@ -26,6 +26,7 @@ A 2D Game, genre: "Dungeon Crawler"
 Python 3.8
 ### Libraries:
 Game engine - Cocos2D 0.6.8
+
 Pyglet 1.5.0 - necessary for Cocos2D to run
 ## 2 Game features:
   • single-player game 
