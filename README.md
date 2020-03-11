@@ -10,11 +10,11 @@ Python 3.8
 Silnik gry - Cocos2D 0.6.8
 Pyglet 1.5.0 - Cocos2D jest na nim zbudowany
 ## 2 Cechy gry 
-  • Gra dla jednego gracza 
-  • Widok izometryczny/’z góry’ 
-  • Sytem progresji 
-  • Przeciwnicy zależni od poziomu progresji gracza 
-  • Generator losowych poziomów
+- Gra dla jednego gracza 
+- Widok izometryczny/’z góry’ 
+- Sytem progresji 
+- Przeciwnicy zależni od poziomu progresji gracza 
+- Generator losowych poziomów
 ## 3 Krótki opis rozgrywki: 
 Gracz steruje postacią poruszającą się po lochach/jaskiniach, podczas ich eksploracji walcząc z przeciwnikami, znajdując nowe, pomocne w rozgrywce przedmioty (np. nowe uzbrojenie), i co jakiś czas mając możliwość podniesienia jednej ze statystyk swojej postaci (takiej jak siła, zręczność itd.). Przeciwnicy wraz z postępami gracza również stają się odpowiednio potężniejsi, by zachować element wyzwania. Kolejne poziomy konstruowane są przez generator.
 
