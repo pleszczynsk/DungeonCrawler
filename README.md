@@ -29,10 +29,10 @@ Game engine - Cocos2D 0.6.8
 
 Pyglet 1.5.0 - necessary for Cocos2D to run
 ## 2 Game features:
-  • single-player game 
-  • 3rd person perspective 
-  • Progression system
-  • Enemies dependant on the player's progression
-  • Level generator
+- single-player game 
+- 3rd person perspective 
+- Progression system
+- Enemies dependant on the player's progression
+- Level generator
 ### 3 Gameplay:
 The player controls a character traversing through dungeons/cave systems, exploring them and fighting with various enemies along the way. During the game the player can pick up various, helpful items (eg. new armor), and has the ability to rise the character's statiscics (like strength, agility and such). The more powerful the player becomes, the harder enemies he encounters, keeping the game challenging. Levels are constructed using the in-game level generator.
