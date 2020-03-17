@@ -15,6 +15,8 @@ Pyglet 1.5.0 - Cocos2D jest na nim zbudowany
 - Sytem progresji 
 - Przeciwnicy zależni od poziomu progresji gracza 
 - Generator losowych poziomów
+- Zapis gry po każdym ukończonym poziomie
+- Opcje gry: zmiana rozdzielczości, trybu wyświetlania (pełny ekran/okno)
 ## 3 Krótki opis rozgrywki: 
 Gracz steruje postacią poruszającą się po lochach/jaskiniach, podczas ich eksploracji walcząc z przeciwnikami, znajdując nowe, pomocne w rozgrywce przedmioty (np. nowe uzbrojenie), i co jakiś czas mając możliwość podniesienia jednej ze statystyk swojej postaci (takiej jak siła, zręczność itd.). Przeciwnicy wraz z postępami gracza również stają się odpowiednio potężniejsi, by zachować element wyzwania. Kolejne poziomy konstruowane są przez generator.
 
@@ -34,5 +36,7 @@ Pyglet 1.5.0 - necessary for Cocos2D to run
 - Progression system
 - Enemies dependant on the player's progression
 - Level generator
+- Option to save a game state after every completed level
+- Game options include changing the game's resolution and display mode (fullscreen/window)
 ## 3 Gameplay:
 The player controls a character traversing through dungeons/cave systems, exploring them and fighting with various enemies along the way. During the game the player can pick up various, helpful items (eg. new armor), and has the ability to rise the character's statiscics (like strength, agility and such). The more powerful the player becomes, the harder enemies he encounters, keeping the game challenging. Levels are constructed using the in-game level generator.
