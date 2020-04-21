@@ -8,6 +8,7 @@ Gra 2D z gatunku "Dungeon Crawler"
 Python 3.8
 ### Biblioteki: 
 Silnik gry - Cocos2D 0.6.8
+
 Pyglet 1.5.0 - Cocos2D jest na nim zbudowany
 ## 2 Cechy gry 
 - Gra dla jednego gracza 
