@@ -51,7 +51,6 @@ class Options_Menu(Menu):
 class Main_Menu( Menu ):
     def __init__(self):
         super(Main_Menu, self).__init__('DungeonCrawler')
-        self.on_new_game = None
         '''self.font_title['font_name'] = 'Arial'
         self.font_title['font_size'] = 32
         self.font_title['color'] = (204, 164, 164, 255)'''
@@ -70,11 +69,12 @@ class Main_Menu( Menu ):
         main_menu = []
         main_menu.append(MenuItem('Nowa Gra', self.on_new_game))
         main_menu.append(MenuItem('Opcje', self.on_option_menu))
-        main_menu.append(MenuItem('Wyjdz', self.on_quit))
+        main_menu.append(MenuItem('Wyjdź', self.on_quit))
         self.create_menu(main_menu, shake(), shake_back())
 
     def on_new_game(self):
-        director.push(newgame_scene)
+        import characters
+        director.push(characters.get_newgame())
     def on_option_menu(self):
         self.parent.switch_to(1)
     def on_quit(self):

@@ -2,7 +2,7 @@ import cocos
 from cocos.director import director
 import cocos.collision_model as colmod
 import cocos.euclid as euc
-import cocos.actions as act
+from cocos.scene import Scene
 
 import pyglet
 from pyglet.window import key
@@ -12,16 +12,12 @@ from pyglet.gl import *
 import random
 import math
 
+__all__ = ['get_newgame']
+
 consts = {
-    "window": {
-        "width":800,
-        "height":600,
-        "vsync": True,
-        "resizable": True
-    },
     "game_area":{
-        "width":400,
-        "height": 300,
+        "width":800,
+        "height": 600,
         "r": 8.0,
         "wall_scale_min": 0.75,
          "wall_scale_max": 2.25,
@@ -43,8 +39,7 @@ consts = {
     }
 }
 
-x_window = consts["window"]["width"]
-y_window = consts["window"]["height"]
+x_window, y_window = director.get_window_size()
 scale_x = x_window/consts["game_area"]["width"]
 scale_y = y_window/consts["game_area"]["height"]
 
@@ -202,13 +197,11 @@ class World(cocos.layer.Layer):
             return True
         return False
 
-
-if __name__ == "__main__":
-    director.init(**consts["window"])
-    scene = cocos.scene.Scene()
+def get_newgame():
+    scene = Scene()
     palette = consts['view']['palette']
     Player.palette = palette
     r, g, b = palette['bg']
     playview = World()
     scene.add(playview, z = 0)
-    director.run(scene)
+    return scene
