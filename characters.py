@@ -67,9 +67,6 @@ class Player(cocos.sprite.Sprite):
     def update_center(self, cshape_center):
         self.position = world_view(cshape_center)
         self.cshape.center = cshape_center
-def reflection_y(a):
-    assert isinstance(a,euc.Vector2)
-    return euc.Vector2(a.x, -a.y)
 
 class World(cocos.layer.Layer):
     is_event_handler = True
@@ -165,12 +162,13 @@ class World(cocos.layer.Layer):
 
         new_velocity = self.player.vel
         mv = buttons['up']
-
+        nv = new_velocity.magnitude()
         if mv != 0:
             new_velocity += dt * mv * self.acceleration * self.impulse_dir
-            nv = new_velocity.magnitude()
             if nv > self.top_speed:
                 new_velocity *= self.top_speed / nv
+        if mv == 0:
+            new_velocity = euc.Vector2(0.0, 0.0)
 
         player_position = self.player.cshape.center
         new_position = player_position
@@ -179,22 +177,8 @@ class World(cocos.layer.Layer):
         while dt > 1.e-6:
             new_position = player_position + dt * new_velocity
             dt_minus = dt
-            if new_position.x < r:
-                dt_minus = (r-player_position.x) / new_velocity.x
-                new_position = player_position + dt_minus * new_velocity
-                new_velocity = -reflection_y(new_velocity)
-            if new_position.x > (self.width - r):
-                dt_minus = (self.width - r - player_position.x) / new_velocity.x
-                new_position = player_position + dt_minus * new_velocity
-                new_velocity = -reflection_y(new_velocity)
-            if new_position.y < r:
-                dt_minus = (r - player_position.y) / new_velocity.y
-                new_position = player_position + dt_minus * new_velocity
-                new_velocity = reflection_y(new_velocity)
-            if new_position.y > (self.height - r):
-                dt_minus = (self.height - r - player_position.y) / new_velocity.y
-                new_position = player_position + dt_minus * new_velocity
-                new_velocity = reflection_y(new_velocity)
+            if new_position.x < r or new_position.x > (self.width - r) or new_position.y < r or new_position.y > (self.height - r):
+                new_velocity = euc.Vector2(0.0,0.0)
             dt -= dt_minus
 
         self.player.vel = new_velocity
