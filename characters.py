@@ -102,6 +102,11 @@ class World(cocos.layer.Layer):
 
         self.toRemove = set()
         self.schedule(self.update)
+        self.empty_level()
+        self.level_launch()
+
+    def level_launch(self):
+        self.generate_level()
 
     def empty_level(self):
         for node in self.get_children():
@@ -109,6 +114,7 @@ class World(cocos.layer.Layer):
         assert len(self.children) == 0
         self.player = None
         self.toRemove.clear()
+        self.impulse_dir = euc.Vector2(0.0, 1.0)
 
     def generate_level(self):
         wall_num = 10
@@ -129,14 +135,14 @@ class World(cocos.layer.Layer):
 
         for i in range(wall_num):
             s = random.random()
-            r = rPlayer * (wall_scale_min *s +wall_scale_max * (1.0 -s))
+            r = rPlayer * (wall_scale_min *s + wall_scale_max * (1.0 -s))
             wall = Player(cx,cy,r,'wall',pics['wall'])
             count = 0
             while count < 100:
                 cx = r + random.random() * (width - 2.0 * r)
                 cy = r + random.random() * (height - 2.0 * r)
                 wall.update_center(euc.Vector2(cx,cy))
-                if self.collisions.any_near(wall, min_separation) in None:
+                if self.collisions.any_near(wall, min_separation) is None:
                     self.add(wall, z=z)
                     z += 1
                     self.collisions.add(wall)
@@ -159,14 +165,17 @@ class World(cocos.layer.Layer):
 
         new_velocity = self.player.vel
         mv = buttons['up']
+
         if mv != 0:
-            newVel += dt * mv * self.acceleration * self.impulse_dir
+            new_velocity += dt * mv * self.acceleration * self.impulse_dir
             nv = new_velocity.magnitude()
             if nv > self.top_speed:
-                newVel *= self.top_speed / nv
+                new_velocity *= self.top_speed / nv
+
         player_position = self.player.cshape.center
         new_position = player_position
         r = self.player.cshape.r
+
         while dt > 1.e-6:
             new_position = player_position + dt * new_velocity
             dt_minus = dt
@@ -174,7 +183,7 @@ class World(cocos.layer.Layer):
                 dt_minus = (r-player_position.x) / new_velocity.x
                 new_position = player_position + dt_minus * new_velocity
                 new_velocity = -reflection_y(new_velocity)
-            if new_position.x > (self.width -r):
+            if new_position.x > (self.width - r):
                 dt_minus = (self.width - r - player_position.x) / new_velocity.x
                 new_position = player_position + dt_minus * new_velocity
                 new_velocity = -reflection_y(new_velocity)
