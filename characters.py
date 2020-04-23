@@ -151,7 +151,7 @@ class World(cocos.layer.Layer):
         buttons = self.buttons
         ma = buttons['right'] - buttons['left']
         if ma != 0:
-            self.player.rotation +=ma * dt *self.ang_velocity
+            self.player.rotation += ma * dt *self.ang_velocity
             a = math.radians(self.player.rotation)
             self.impulse_dir = euc.Vector2(math.sin(a), math.cos(a))
 
@@ -159,7 +159,7 @@ class World(cocos.layer.Layer):
         mv = buttons['up']
         nv = new_velocity.magnitude()
         if mv != 0:
-            new_velocity += dt * mv * self.acceleration * self.impulse_dir
+            new_velocity += mv * self.acceleration * self.impulse_dir
             if nv > self.top_speed:
                 new_velocity *= self.top_speed / nv
         if mv == 0:
@@ -168,14 +168,17 @@ class World(cocos.layer.Layer):
         player_position = self.player.cshape.center
         new_position = player_position
         r = self.player.cshape.r
-
         while dt > 1.e-6:
             new_position = player_position + dt * new_velocity
             dt_minus = dt
             if new_position.x < r or new_position.x > (self.width - r) or new_position.y < r or new_position.y > (self.height - r):
-                new_velocity = euc.Vector2(0.0,0.0)
+                new_position = player_position
+            for colliding in self.collisions.iter_colliding(self.player):
+                typecoll = colliding.btype
+                if typecoll == 'wall':
+                    new_velocity = -new_velocity
             dt -= dt_minus
-
+            last_position = player_position
         self.player.vel = new_velocity
         self.player.update_center(new_position)
 
