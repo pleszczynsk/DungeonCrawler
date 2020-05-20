@@ -32,8 +32,8 @@ consts = {
     },
     "view":{
         "palette":{
-            'bg': (0, 65, 133),
-            'player': (237, 27, 36),
+            'bg': (208, 217, 175),
+            'player': (208, 217, 100),
             'wall': (247, 148, 29),
         }
     }
@@ -52,7 +52,7 @@ class Player(cocos.sprite.Sprite):
         super(Player,self).__init__(img)
         self.scale = (radius *1.05) * scale_x/(self.image.width/2.0)
         self.btype = btype
-        self.color = self.palette[btype]
+        #self.color = self.palette[btype]
         self.cshape = colmod.CircleShape(euc.Vector2(cx,cy), radius)
         self.update_center(self.cshape.center)
         if vel is None:
@@ -79,7 +79,7 @@ class World(cocos.layer.Layer):
 
         pics = {}
         pics["player"] = pyglet.resource.image('assets/player.png')
-        pics["wall"] = pyglet.resource.image('assets/wall.png')
+        pics["wall"] = pyglet.resource.image('assets/wall1.png')
         self.pics = pics
 
         cell_size = self.rPlayer * self.wall_scale_max * 2.0 * 1.25
@@ -109,7 +109,7 @@ class World(cocos.layer.Layer):
         self.impulse_dir = euc.Vector2(0.0, 1.0)
 
     def generate_level(self):
-        wall_num = 10
+        wall_num = 50
         min_separation_rel = 3.0
 
         width = self.width
@@ -120,14 +120,13 @@ class World(cocos.layer.Layer):
         wall_scale_max = self.wall_scale_max
         pics = self.pics
         z = 0
-
         cx,cy = (0.5 * width, 0.5 * height)
         self.player = Player(cx,cy,rPlayer, 'player', pics['player'])
         self.collisions.add(self.player)
 
         for i in range(wall_num):
             s = random.random()
-            r = rPlayer * (wall_scale_min *s + wall_scale_max * (1.0 -s))
+            r = rPlayer * (wall_scale_min *s + wall_scale_max * (3.0 -s))
             wall = Player(cx,cy,r,'wall',pics['wall'])
             count = 0
             while count < 100:
@@ -158,15 +157,14 @@ class World(cocos.layer.Layer):
         new_velocity = self.player.vel
         mv = buttons['up']
         nv = new_velocity.magnitude()
+
         if mv != 0:
             new_velocity += mv * self.acceleration * self.impulse_dir
             if nv > self.top_speed:
                 new_velocity *= self.top_speed / nv
         if mv == 0:
             new_velocity = euc.Vector2(0.0, 0.0)
-
         player_position = self.player.cshape.center
-        new_position = player_position
         r = self.player.cshape.r
         while dt > 1.e-6:
             new_position = player_position + dt * new_velocity
@@ -178,10 +176,8 @@ class World(cocos.layer.Layer):
                 if typecoll == 'wall':
                     new_velocity = -new_velocity
             dt -= dt_minus
-            last_position = player_position
         self.player.vel = new_velocity
         self.player.update_center(new_position)
-
         for node in self.toRemove:
             self.remove(node)
         self.toRemove.clear()
@@ -205,6 +201,7 @@ def get_newgame():
     palette = consts['view']['palette']
     Player.palette = palette
     r, g, b = palette['bg']
+    scene.add(cocos.layer.ColorLayer(r, g, b, 255), z=-1)
     playview = World()
     scene.add(playview, z = 0)
     return scene

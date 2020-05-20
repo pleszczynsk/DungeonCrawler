@@ -8,19 +8,19 @@ class Title_Layer(ColorLayer):
     #FONT_SIZE = 30
     def __init__(self):
         w,h = director.get_window_size()
-        super(Title_Layer,self).__init__(32,32,32,16, width= w, height= h)
+        super(Title_Layer,self).__init__(32,100,32,16, width= w, height= h)
 
         self.font_title['font_name'] = 'Arial'
         self.font_title['font_size'] = 32
         self.font_title['color'] = (204, 164, 164, 255)
 
-        title = Label('DungeonCrawler', **self.font_title)
+        title = Label('BattlefieldCrawler', **self.font_title)
         #title.position=(w/2,h)
         self.add(title)
 
 class Options_Menu(Menu):
     def __init__(self):
-        super(Options_Menu, self).__init__('DungeonCrawler')
+        super(Options_Menu, self).__init__('Battlefield Crawler')
         '''self.font_title['font_name'] = 'Arial'
         self.font_title['font_size'] = 32
         self.font_title['color'] = (204,164,164,255)'''
@@ -50,7 +50,7 @@ class Options_Menu(Menu):
 
 class Main_Menu( Menu ):
     def __init__(self):
-        super(Main_Menu, self).__init__('DungeonCrawler')
+        super(Main_Menu, self).__init__('Battlefield Crawler')
         '''self.font_title['font_name'] = 'Arial'
         self.font_title['font_size'] = 32
         self.font_title['color'] = (204, 164, 164, 255)'''
@@ -81,7 +81,7 @@ class Main_Menu( Menu ):
         pyglet.app.exit()
 
 if __name__ == "__main__":
-    director.init(resizable = True, width =1280, height=720, caption = "Test")
+    director.init(resizable = True, width =1280, height=720, caption = "Battlefield Crawler")
     
     scene = cocos.scene.Scene()
     scene.add( MultiplexLayer(
