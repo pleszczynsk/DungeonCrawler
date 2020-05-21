@@ -12,6 +12,7 @@ from pyglet.gl import *
 import random
 import math
 
+import game
 __all__ = ['get_newgame']
 
 consts = {
@@ -27,13 +28,14 @@ consts = {
         "bindings":{
             key.LEFT: 'left',
             key.RIGHT: 'right',
-            key.UP: 'up'
+            key.UP: 'up',
+            key.ESCAPE: 'escape'
         }
     },
     "view":{
         "palette":{
-            'bg': (208, 217, 175),
-            'player': (208, 217, 100),
+            'bg': (242, 221, 157),
+            'player': (255, 255, 255),
             'wall': (247, 148, 29),
         }
     }
@@ -170,7 +172,7 @@ class World(cocos.layer.Layer):
             new_position = player_position + dt * new_velocity
             dt_minus = dt
             if new_position.x < r or new_position.x > (self.width - r) or new_position.y < r or new_position.y > (self.height - r):
-                new_position = player_position
+                director.push(get_newgame())
             for colliding in self.collisions.iter_colliding(self.player):
                 typecoll = colliding.btype
                 if typecoll == 'wall':
@@ -178,10 +180,18 @@ class World(cocos.layer.Layer):
             dt -= dt_minus
         self.player.vel = new_velocity
         self.player.update_center(new_position)
+
+        if buttons['escape'] != 0:
+            scene = cocos.scene.Scene()
+            scene.add(game.MultiplexLayer(
+                game.Main_Menu(),
+                game.Options_Menu()
+            ))
+            director.run(scene)
+
         for node in self.toRemove:
             self.remove(node)
         self.toRemove.clear()
-
     def on_key_press(self, k, m):
         binds = self.bindings
         if k in binds:

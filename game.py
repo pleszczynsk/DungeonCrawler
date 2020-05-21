@@ -30,7 +30,7 @@ class Options_Menu(Menu):
 
         self.font_item_selected['font_name'] = 'Arial'
         self.font_item_selected['font_size'] = 20
-        self.font_item_selected['color'] = (255,100,255,255)
+        self.font_item_selected['color'] = (160,126,174,255)
 
         self.menu_anchor_y = CENTER
         self.menu_anchor_x = CENTER
@@ -61,7 +61,7 @@ class Main_Menu( Menu ):
         self.font_item_selected['font_name'] = 'Arial'
         self.font_item_selected['font_size'] = 20
 
-        self.font_item_selected['color'] = (255,100,255,255)
+        self.font_item_selected['color'] = (160,126,174,255)
 
         self.menu_anchor_y = CENTER
         self.menu_anchor_x = CENTER
@@ -88,4 +88,5 @@ if __name__ == "__main__":
                 Main_Menu(),
                 Options_Menu()
                             ))
+    scene.add(cocos.layer.ColorLayer(105, 94, 109, 255), z=-1)
     director.run(scene)
