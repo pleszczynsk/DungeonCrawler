@@ -61,3 +61,16 @@ Zaimplementowane:
 - Stworzenie i zaimplementowanie testowych sprite-ów gracza i sceny
 
 Koncepcja gry, oraz używane biblioteki (oraz ich wersja) nie uległy zmianie.
+
+----------------------------------------------------------------------------------------------------------------------------
+### Raport z postępu prac (28.05.2020):
+Zaimplementowane:
+## Rozgrywka:
+- Poprawa generatora poziomów - przejścia pomiędzy poziomami
+- Stworzenie wstępnych sprite-ów gracza, otoczenia, przeciwników
+- Zaprojektowanie menu ekwipunku gracza
+- Wrogowie oraz ich statystyki
+- Model walki/interakcji pomiędzy przeciwnikiem a graczem
+
+Koncepcja gry, oraz używane biblioteki (oraz ich wersja) nie uległy zmianie.\
+Uwaga: Kod na repozytorium może różnić się od obecnej wersji gry, obecnie testuję różne warianty rozgrywki. Aktualizacja na repozytorium pojawi się niebawem.
