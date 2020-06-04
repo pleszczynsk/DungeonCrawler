@@ -3,9 +3,8 @@ from cocos.layer import *
 from cocos.menu import *
 from cocos.text import *
 import pyglet
-
+###############MAIN MENU###############
 class Title_Layer(ColorLayer):
-    #FONT_SIZE = 30
     def __init__(self):
         w,h = director.get_window_size()
         super(Title_Layer,self).__init__(32,100,32,16, width= w, height= h)

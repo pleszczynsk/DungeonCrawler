@@ -54,7 +54,7 @@ scale_y = y_window/consts["game_area"]["height"]
 def world_view(v):
     return v.x *scale_x, v.y * scale_y
 
-class Player(cocos.sprite.Sprite):
+class Player(cocos.sprite.Sprite): #Entity class
     palette ={}
     def __init__(self, cx, cy, radius, btype, img, vel = None):
         super(Player,self).__init__(img)
@@ -69,18 +69,23 @@ class Player(cocos.sprite.Sprite):
         self.position = world_view(cshape_center)
         self.cshape.center = cshape_center
 
-class HUD(Layer):
+class HUD(Layer): #Interface
     def __init__(self):
         w,h = director.get_window_size()
         super(HUD, self).__init__()
         self.add(ColorLayer(32, 32, 32, 32, width=w, height=48), z=-1)
         self.health = Label('Zdrowie:',font_size = 20, color = (0,0,0,200),
                             anchor_x = 'center', anchor_y = 'bottom')
+        self.level = Label('Poziom:', font_size=20, color=(0, 0, 0, 200),
+                            anchor_x='center', anchor_y='bottom')
         self.health.position = (w-(1/2*w),h-(h-10))
+        self.level.position = w-(1/4*w),h-(h-10)
         self.add(self.health)
+        self.add(self.level)
     def draw(self):
         super(HUD,self).draw()
         self.health.element.text = 'Zdrowie:%d' % status.health
+        self.level.element.text = 'Poziom:%d' % status.level
     if status.health_chng:
         status.health_chng.draw()
 
@@ -88,7 +93,7 @@ class drawHUD(Layer):
     def __init__(self):
         super(drawHUD,self).__init__()
         self.add(HUD())
-
+###############LEVEL GENERATION###############
 class World(cocos.layer.Layer):
     is_event_handler = True
     def __init__(self):
@@ -152,7 +157,7 @@ class World(cocos.layer.Layer):
         self.player = Player(cx,cy,rPlayer, 'player', pics['player'])
         self.collisions.add(self.player)
 
-        for i in range(wall_num):
+        for i in range(wall_num): #Bomb craters placement
             s = random.random()
             r = rPlayer * (wall_scale_min *s + wall_scale_max * (3.0 -s))
             wall = Player(cx,cy,r,'wall',pics['wall'])
@@ -168,7 +173,7 @@ class World(cocos.layer.Layer):
                     break
                 count += 1
 
-        for i in range(enemy_num):
+        for i in range(enemy_num): #Enemy placement
             r = 7
             enemy = Player(cx,cy,r,'enemy',pics['enemy'])
             count = 0
@@ -185,11 +190,12 @@ class World(cocos.layer.Layer):
         self.add(self.player, z=z)
         z += 1
 
-    def update(self,dt):
+    def update(self,dt): #Updates the scene
         self.collisions.clear()
         for z, node in self.children:
             self.collisions.add(node)
         buttons = self.buttons
+###############PLAYER CONTROLS & COLLISIONS###############
         ma = buttons['right'] - buttons['left']
         if ma != 0:
             self.player.rotation += ma * dt *self.ang_velocity
@@ -200,6 +206,7 @@ class World(cocos.layer.Layer):
         mv = buttons['up']
         mvdn = buttons['down']
         nv = new_velocity.magnitude()
+
         if mvdn != 0:
             new_velocity += mvdn * self.acceleration * -(self.impulse_dir)
             if nv > self.top_speed:
@@ -212,24 +219,25 @@ class World(cocos.layer.Layer):
             new_velocity = euc.Vector2(0.0, 0.0)
         player_position = self.player.cshape.center
         r = self.player.cshape.r
+
         while dt > 1.e-6:
             new_position = player_position + dt * new_velocity
             dt_minus = dt
             if new_position.x < r or new_position.x > (self.width - r) or new_position.y < r or new_position.y > (self.height - r):
+                status.level += 1
                 director.push(get_newgame())
             for colliding in self.collisions.iter_colliding(self.player):
                 typecoll = colliding.btype
                 if typecoll == 'wall':
                     new_velocity = -new_velocity
                 elif typecoll == 'enemy':
-                    status.health -= 0.1
-
-
+                    status.health -= 0.1*status.level #Enemy damage multiplies each level
             dt -= dt_minus
         self.player.vel = new_velocity
         self.player.update_center(new_position)
 
-        if buttons['escape'] != 0:
+        if buttons['escape'] != 0 or status.health <= 0.0:
+            status.reset() #player stats, level reset to defaults
             scene = cocos.scene.Scene()
             scene.add(game.MultiplexLayer(
                 game.Main_Menu(),
@@ -256,7 +264,7 @@ class World(cocos.layer.Layer):
 
 def get_newgame():
     scene = Scene()
-    hud = drawHUD()
+    hud = HUD()
     palette = consts['view']['palette']
     Player.palette = palette
     r, g, b = palette['bg']
