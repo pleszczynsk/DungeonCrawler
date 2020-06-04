@@ -1,8 +1,12 @@
 import cocos
-from cocos.director import director
 import cocos.collision_model as colmod
 import cocos.euclid as euc
+from cocos.director import *
 from cocos.scene import Scene
+
+from cocos.layer import *
+from cocos.text import *
+from cocos.actions import *
 
 import pyglet
 from pyglet.window import key
@@ -11,8 +15,9 @@ from pyglet.gl import *
 
 import random
 import math
-
+import interface
 import game
+from status import status
 __all__ = ['get_newgame']
 
 consts = {
@@ -29,6 +34,7 @@ consts = {
             key.LEFT: 'left',
             key.RIGHT: 'right',
             key.UP: 'up',
+            key.DOWN: 'down',
             key.ESCAPE: 'escape'
         }
     },
@@ -54,16 +60,34 @@ class Player(cocos.sprite.Sprite):
         super(Player,self).__init__(img)
         self.scale = (radius *1.05) * scale_x/(self.image.width/2.0)
         self.btype = btype
-        #self.color = self.palette[btype]
         self.cshape = colmod.CircleShape(euc.Vector2(cx,cy), radius)
         self.update_center(self.cshape.center)
         if vel is None:
             vel = euc.Vector2(0.0,0.0)
         self.vel = vel
-
     def update_center(self, cshape_center):
         self.position = world_view(cshape_center)
         self.cshape.center = cshape_center
+
+class HUD(Layer):
+    def __init__(self):
+        w,h = director.get_window_size()
+        super(HUD, self).__init__()
+        self.add(ColorLayer(32, 32, 32, 32, width=w, height=48), z=-1)
+        self.health = Label('Zdrowie:',font_size = 20, color = (0,0,0,200),
+                            anchor_x = 'center', anchor_y = 'bottom')
+        self.health.position = (w-(1/2*w),h-(h-10))
+        self.add(self.health)
+    def draw(self):
+        super(HUD,self).draw()
+        self.health.element.text = 'Zdrowie:%d' % status.health
+    if status.health_chng:
+        status.health_chng.draw()
+
+class drawHUD(Layer):
+    def __init__(self):
+        super(drawHUD,self).__init__()
+        self.add(HUD())
 
 class World(cocos.layer.Layer):
     is_event_handler = True
@@ -82,6 +106,7 @@ class World(cocos.layer.Layer):
         pics = {}
         pics["player"] = pyglet.resource.image('assets/player.png')
         pics["wall"] = pyglet.resource.image('assets/wall1.png')
+        pics["enemy"] = pyglet.resource.image('assets/enemy.png')
         self.pics = pics
 
         cell_size = self.rPlayer * self.wall_scale_max * 2.0 * 1.25
@@ -112,6 +137,7 @@ class World(cocos.layer.Layer):
 
     def generate_level(self):
         wall_num = 50
+        enemy_num = 10
         min_separation_rel = 3.0
 
         width = self.width
@@ -141,6 +167,21 @@ class World(cocos.layer.Layer):
                     self.collisions.add(wall)
                     break
                 count += 1
+
+        for i in range(enemy_num):
+            r = 7
+            enemy = Player(cx,cy,r,'enemy',pics['enemy'])
+            count = 0
+            while count < 100:
+                cx = r + random.random() * (width - 2.0 * r)
+                cy = r + random.random() * (height - 2.0 * r)
+                enemy.update_center(euc.Vector2(cx,cy))
+                if self.collisions.any_near(enemy, min_separation) is None:
+                    self.add(enemy, z=z)
+                    z += 1
+                    self.collisions.add(enemy)
+                    break
+                count += 1
         self.add(self.player, z=z)
         z += 1
 
@@ -148,7 +189,6 @@ class World(cocos.layer.Layer):
         self.collisions.clear()
         for z, node in self.children:
             self.collisions.add(node)
-
         buttons = self.buttons
         ma = buttons['right'] - buttons['left']
         if ma != 0:
@@ -158,13 +198,17 @@ class World(cocos.layer.Layer):
 
         new_velocity = self.player.vel
         mv = buttons['up']
+        mvdn = buttons['down']
         nv = new_velocity.magnitude()
-
+        if mvdn != 0:
+            new_velocity += mvdn * self.acceleration * -(self.impulse_dir)
+            if nv > self.top_speed:
+                new_velocity *= self.top_speed / nv
         if mv != 0:
             new_velocity += mv * self.acceleration * self.impulse_dir
             if nv > self.top_speed:
                 new_velocity *= self.top_speed / nv
-        if mv == 0:
+        if mv == 0 and mvdn == 0:
             new_velocity = euc.Vector2(0.0, 0.0)
         player_position = self.player.cshape.center
         r = self.player.cshape.r
@@ -177,6 +221,10 @@ class World(cocos.layer.Layer):
                 typecoll = colliding.btype
                 if typecoll == 'wall':
                     new_velocity = -new_velocity
+                elif typecoll == 'enemy':
+                    status.health -= 0.1
+
+
             dt -= dt_minus
         self.player.vel = new_velocity
         self.player.update_center(new_position)
@@ -208,10 +256,12 @@ class World(cocos.layer.Layer):
 
 def get_newgame():
     scene = Scene()
+    hud = drawHUD()
     palette = consts['view']['palette']
     Player.palette = palette
     r, g, b = palette['bg']
     scene.add(cocos.layer.ColorLayer(r, g, b, 255), z=-1)
     playview = World()
     scene.add(playview, z = 0)
+    scene.add(hud, z=3, name='hud')
     return scene
