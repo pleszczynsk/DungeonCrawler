@@ -74,3 +74,17 @@ Zaimplementowane:
 
 Koncepcja gry, oraz używane biblioteki (oraz ich wersja) nie uległy zmianie.\
 Uwaga: Kod na repozytorium może różnić się od obecnej wersji gry, obecnie testuję różne warianty rozgrywki. Aktualizacja na repozytorium pojawi się niebawem.
+
+
+----------------------------------------------------------------------------------------------------------------------------
+### Końcowy stan projektu - Battlefield Crawler:
+
+Planowane | Finalna wersja
+------------ | -------------
+Widok izometryczny/ "z góry" | Content from cell 2
+Ekwipunek | Nie zaimplementowano :x:
+System progresji: Statystyki gracza | Zdrowie :heavy_check_mark:
+Przeciwnicy zależni od poziomu progresji gracza  | Co poziom przeciwnicy zabierają przy kontakcie coraz więcej zdrowia :heavy_check_mark:
+Generator losowych poziomów | Losowo rozstawiani przeciwnicy i przeszkody :heavy_check_mark: , 
+Zapis gry po każdym ukończonym poziomie | 
+Opcje gry: zmiana rozdzielczości, trybu wyświetlania (pełny ekran/okno) | Zaimplementowano :heavy_check_mark:
