@@ -79,8 +79,17 @@ Uwaga: Kod na repozytorium może różnić się od obecnej wersji gry, obecnie t
 ----------------------------------------------------------------------------------------------------------------------------
 ### Końcowy stan projektu - Battlefield Crawler:
 
+
+#Koncepcja:
 Planowane | Finalna wersja
 ------------ | -------------
+Gracz porusza się po lochach/jaskiniach, walcząc z przeciwnikami | Gracz porusza się po zbombardowanej plaży na którą został zrzucony, omija miny, kontakt z którymi zabiera zdrowie bohatera. Co poziom lizebność i ilość zabieranego przez przeszkody zdrowia wzrasta. Co 5 poziomów na mapie pojawia się apteczka, którą można uleczyć rany.
+
+#Informacje techniczne
+Planowane | Finalna wersja
+------------ | -------------
+Język: Python 3.8 | :heavy_check_mark:
+Używane biblioteki: Cocos2D 0.6.8, Pyglet 1.5.0 | :heavy_check_mark:
 Widok izometryczny/ "z góry" | :heavy_check_mark:
 Ekwipunek | Zaprojektowano, nie zaimplementowano :x:
 System progresji: Statystyki gracza | Zdrowie :heavy_check_mark:, Kondycja :heavy_check_mark:, Poziom :heavy_check_mark:
@@ -88,3 +97,4 @@ System progresji: Przeciwnicy zależni od poziomu progresji gracza  | Co poziom 
 Generator losowych poziomów | Losowo rozstawiani przeciwnicy i przeszkody :heavy_check_mark:, "Inteligentne" generowanie poziomu: przeszkody ani przeciwnicy nie nachodzą na siebie :heavy_check_mark:
 Zapis gry po każdym ukończonym poziomie |
 Opcje gry: zmiana rozdzielczości, trybu wyświetlania (pełny ekran/okno) | Zaimplementowano :heavy_check_mark:, dodatkowo licznik klatek na sekundę :heavy_check_mark:
+
