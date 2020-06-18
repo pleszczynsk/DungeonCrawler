@@ -77,15 +77,15 @@ Uwaga: Kod na repozytorium może różnić się od obecnej wersji gry, obecnie t
 
 
 ----------------------------------------------------------------------------------------------------------------------------
-### Końcowy stan projektu - Battlefield Crawler:
+## Końcowy stan projektu - Battlefield Crawler:
 
 
-# Koncepcja:
+### Koncepcja:
 Planowane | Finalna wersja
 ------------ | -------------
 Gracz steruje postacią poruszającą się po lochach/jaskiniach, walcząc z przeciwnikami, znajdując nowe, pomocne w rozgrywce przedmioty (np. nowe uzbrojenie), i co jakiś czas mając możliwość podniesienia jednej ze statystyk swojej postaci (takiej jak siła, zręczność itd.). Przeciwnicy wraz z postępami gracza również stają się odpowiednio potężniejsi, by zachować element wyzwania| Gracz porusza się po zbombardowanej plaży na którą został zrzucony, omija miny, kontakt z którymi zabiera zdrowie bohatera. Co poziom lizebność i ilość zabieranego przez przeszkody zdrowia wzrasta. Co 5 poziomów na mapie pojawia się apteczka, którą można uleczyć rany.
 
-# Informacje techniczne
+### Informacje techniczne
 Planowane | Finalna wersja
 ------------ | -------------
 Język: Python 3.8 | :heavy_check_mark:
