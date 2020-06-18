@@ -256,6 +256,7 @@ class World(cocos.layer.Layer):
                 typecoll = colliding.btype
                 if typecoll == 'wall':
                     new_velocity = -new_velocity
+                    status.health -= 0.04
                 elif typecoll == 'enemy':
                     status.health -= 0.1*status.level #Enemy damage multiplies each level
                 elif typecoll == 'health':
