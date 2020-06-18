@@ -95,6 +95,6 @@ Ekwipunek | Zaprojektowano, nie zaimplementowano :x:
 System progresji: Statystyki gracza | Zdrowie :heavy_check_mark:, Kondycja :heavy_check_mark:, Poziom :heavy_check_mark:
 System progresji: Przeciwnicy zależni od poziomu progresji gracza  | Co poziom przeciwnicy zabierają przy kontakcie coraz więcej zdrowia, są coraz liczniejsi :heavy_check_mark:
 Generator losowych poziomów | Losowo rozstawiani przeciwnicy i przeszkody :heavy_check_mark:, "Inteligentne" generowanie poziomu: przeszkody ani przeciwnicy nie nachodzą na siebie :heavy_check_mark:
-Zapis gry po każdym ukończonym poziomie |
+Zapis gry po każdym ukończonym poziomie | Nie zaimplementowano :x:
 Opcje gry: zmiana rozdzielczości, trybu wyświetlania (pełny ekran/okno) | Zaimplementowano :heavy_check_mark:, dodatkowo licznik klatek na sekundę :heavy_check_mark:
 
