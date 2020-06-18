@@ -2,6 +2,7 @@ import cocos
 from cocos.layer import *
 from cocos.menu import *
 from cocos.text import *
+from cocos.director import *
 import pyglet
 ###############MAIN MENU###############
 class Title_Layer(ColorLayer):
